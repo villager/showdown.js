@@ -1,0 +1,19 @@
+{
+    "name": "ps.js",
+    "version": "1.0.0",
+    "keywords": [
+        "Pokemon Showdown",
+        "ps.js",
+        "bot"
+    ],
+    "author": {
+        "name": "Aldair Beltran",
+        "email": "aldairbeltran23@hotmail.com",
+        "url": "https://github.com/villager"
+    },
+    "dependencies": {
+        "request": "^2.88.2",
+        "sockjs-client": "^1.4.0"
+    },
+    "private": false
+}
