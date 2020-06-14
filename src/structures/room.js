@@ -1,6 +1,8 @@
 "use strict";
 
-class Rooms {
+const Utils = require('../utils');
+
+class Room {
     constructor(data, client) {
         this.name = "";
         this.users = null;
@@ -25,7 +27,7 @@ class Rooms {
     }
     init(data) {
         this.name = data.name;
-        this.users = new Set();
+        this.users = new Utils.Set();
     }
     toJSON() {
         let json = Object.create(null);

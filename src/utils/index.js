@@ -1,9 +1,8 @@
 "use strict";
-class UtilMap extends Map {
-    toJSON() {
-		return Array.from(this);
-	}
-}
+
+const Extensions = require('./extensions');
+
 module.exports = {
-    Map: UtilMap,
+    Map: Extensions.Map,
+    Set: Extensions.Set,
 };

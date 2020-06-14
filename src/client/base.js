@@ -1,5 +1,6 @@
 
-const SocketManager = require('./websocket/manager.js');
+const SocketManager = require('./websocket/manager');
+const LoginManager = require('../managers/login');
 const {EventEmitter} = require('events');
 
 const DEFAULT_SERVER = {

@@ -1,13 +1,9 @@
-"use strict";
-
-const Utils = require('../utils');
-
 class User {
     constructor(data, client) {
         this.name = "";
         this.group = " ";
         this.connected = false;
-        this.rooms = new Utils.Set();
+        this.rooms = new Set();
         this.lastMessage = null;
         this.lastSeen = null;
         this.init(data);

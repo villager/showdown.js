@@ -1,8 +1,10 @@
 "use strict";
+
 const BaseClient = require('./base');
 const RoomManager = require('../managers/cache/rooms');
 const UserManager = require('../managers/cache/users');
 const SocketManager = require('./websocket');
+const UserBot = require('../structures/user');
 
 class Client extends BaseClient {
     constructor(options) {
@@ -10,6 +12,7 @@ class Client extends BaseClient {
         this.socket = new SocketManager(this)
         this.users = new UserManager(this);
         this.rooms = new RoomManager(this);
+        this.user = new UserBot(this);
         this.socket.on();
         this.on("disconnect", (e) => {
             console.log('Bot Disconnected' + (err ? ' | ' + err.code + ': ' + err.message : ''));
@@ -27,8 +30,12 @@ class Client extends BaseClient {
 		}
         this.nextSend = 0;
         this.rooms.cache.clear();
+        this.users.cache.clear();
 		this.manager.conntime = 0;
-	}
+    }
+    $validation() {
+
+    }
 }
 
 module.exports = Client;
