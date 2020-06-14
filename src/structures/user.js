@@ -1,8 +1,9 @@
 "use strict";
 
 const Utils = require('../utils');
+const BaseUser = require('./bot');
 
-class User {
+class User extends BaseUser {
     /**
      * Main class of users
      * @constructor
@@ -10,11 +11,7 @@ class User {
      * @param {Client} client 
      */
     constructor(data, client) {
-        /** @type {string} */
-        this.name = "";
-
-        /** @type {string} */
-        this.group = " ";
+        super();
 
         /** @type {Boolean} */
         this.connected = false;
@@ -28,30 +25,8 @@ class User {
         /** @type {number} **/
         this.lastSeen = null;
 
-        /** @type {string | number} **/
-        this.avatar = null;
-
-        /** @type {string} **/
-        this.idle = false;
-
-        /** @type {string} **/
-        this.status = "";
-
-        /** @type {boolean} */
-        this.blockChallenges = false;
-
-        /** @type {boolean} */
-        this.blockPMs = false;
-
         this.init(data);
         Object.defineProperty(this, 'client', {value: client});
-    }
-    /**
-     * Get user's id
-     * @returns {string} Returns an string
-     */
-    get id() {
-        return this.name;
     }
 
     /**
@@ -77,20 +52,6 @@ class User {
         this.blockChallenges = false;
         this.blockPMs = false;
         this.update();
-    }
-
-    /**
-     * Convert local data into an object
-     * @return {JSON} Retuns an object
-     */
-    toJSON() {
-        let json = Object.create(null);
-        for (const [key, value] of this) {
-            if(typeof this[key] !== "function") {
-                json[key] = value;
-            }
-        }
-        return json;
     }
 }
 module.exports = User;

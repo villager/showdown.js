@@ -2,15 +2,28 @@ class User {
     /**
      * Class for the bot as user
      * @constructor
-     * @param {Client} client 
      */
     constructor() {
+        /** @type {string | number} **/
+        this.avatar = null;
+
+        /** @type {string} */
+        this.name = '';
+
         /** @type {string} */
         this.group = ' ';
+
         /** @type {Boolean} */
         this.idle = false;
+
         /** @type {string?} */
         this.status = '';
+
+        /** @type {boolean} */
+        this.blockChallenges = false;
+
+        /** @type {boolean} */
+        this.blockPMs = false;
     }
     /** 
      * Gets the bot Id
@@ -24,7 +37,22 @@ class User {
      * @param {AnyObject} data 
      */
     update(data) {
+        if (data.name) this.name = data.name;
         if (data.group) this.group = data.group;
+    }
+
+    /**
+     * Convert local data into an object
+     * @return {JSON} Retuns an object
+     */
+    toJSON() {
+        let json = Object.create(null);
+        for (const [key, value] of this) {
+            if(typeof this[key] !== "function") {
+                json[key] = value;
+            }
+        }
+        return json;
     }
     
 }
