@@ -1,6 +1,7 @@
 class User {
     /**
      * Class for the bot as user
+     * @constructor
      * @param {Client} client 
      */
     constructor() {
@@ -13,7 +14,7 @@ class User {
     }
     /** 
      * Gets the bot Id
-     * @return {string}
+     * @return {string} Returns an string
     */
     get id() {
         return this.name;
@@ -21,7 +22,6 @@ class User {
     /**
      * Update Bot's info
      * @param {AnyObject} data 
-     * @return {void}
      */
     update(data) {
         if (data.group) this.group = data.group;

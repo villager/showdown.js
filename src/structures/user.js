@@ -5,6 +5,7 @@ const Utils = require('../utils');
 class User {
     /**
      * Main class of users
+     * @constructor
      * @param {AnyObject} data 
      * @param {Client} client 
      */
@@ -46,8 +47,8 @@ class User {
         Object.defineProperty(this, 'client', {value: client});
     }
     /**
-     * Return user's Id
-     * @return {string}
+     * Get user's id
+     * @returns {string} Returns an string
      */
     get id() {
         return this.name;
@@ -56,7 +57,6 @@ class User {
     /**
      * Update user's info
      * @param {AnyObject} data
-     * @return {void} 
      */
     update(data) {
         this.lastSeen = Date.now();
@@ -65,7 +65,6 @@ class User {
     /**
      * Initializacion of the user
      * @param {object} data 
-     * @return {void}
      */
     init(data) {
         if (data.name) this.name = data.name;
@@ -82,7 +81,7 @@ class User {
 
     /**
      * Convert local data into an object
-     * @return {JSON}
+     * @return {JSON} Retuns an object
      */
     toJSON() {
         let json = Object.create(null);

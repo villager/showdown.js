@@ -4,22 +4,36 @@ const BaseClient = require('./base');
 const RoomManager = require('../managers/cache/rooms');
 const UserManager = require('../managers/cache/users');
 const SocketManager = require('./websocket');
-const UserBot = require('../structures/user');
+const UserBot = require('../structures/bot');
 
 class Client extends BaseClient {
     constructor(options) {
         super(options);
-        this.socket = new SocketManager(this)
+
+        /** @type {SocketManager} **/
+        this.socket = new SocketManager(this);
+
+        /** @type {UserManager} **/
         this.users = new UserManager(this);
+
+        /** @type {RoomManager} **/
         this.rooms = new RoomManager(this);
+
+        /** @type {UserBot} **/
         this.user = new UserBot(this);
+
         this.socket.on();
+
         this.on("disconnect", (e) => {
             console.log('Bot Disconnected' + (err ? ' | ' + err.code + ': ' + err.message : ''));
             if (this.socket.connection.closed || this.socket.connection.connecting || this.socket.connection.connected) return;
             this.socket.reconnect();
         });
     }
+    /**
+     * Event of parseLine, use callback as a function () => {}
+     * @param {Function} callback 
+     */
     parseLine(callback) {
         this.on("parseLine", callback);
     }
