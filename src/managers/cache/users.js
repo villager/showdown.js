@@ -7,6 +7,7 @@ const User = require('../../structures/user');
 
 class UserManager extends BaseCache {
     constructor(client) {
+        super();
         Object.defineProperty(this, 'client', {value: client});
     }
     /**

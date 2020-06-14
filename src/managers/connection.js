@@ -1,6 +1,7 @@
 "use strict";
 
 const DEFAULT_TRY_RECONNECT = 30 * 1000;
+const ActivityManager = require('./activity');
 
 class ConnectionManager {
     constructor(client) {
@@ -8,12 +9,12 @@ class ConnectionManager {
 		this.connecting = false;
 		this.status = {connected: false};
 		this.closed = false;
-		this.maxAttemps = client.reconnect.attemps || 3;
+		this.maxAttemps = client.reconnect ? client.reconnect.attemps : 3;
 		this.attemps = 0;
-		this.activity = new Activity(this);
+		this.activity = new ActivityManager(this);
 		this.conntime = 0;
 		this._timer = null;
-		this.time = client.reconnect.time || DEFAULT_TRY_RECONNECT;
+		this.time = client.reconnect ? client.reconnect.time : DEFAULT_TRY_RECONNECT;
 	}
 	_clear() {
 		if (!this._timer) return;
@@ -24,14 +25,14 @@ class ConnectionManager {
 		this._clear();
 		this.timer = setTimeout(() => {
 			if (this.closed) return;
-			this.server.connect();
+			this.client.socket.on();
 			this.attemps++;
 			if (this.attemps > this.maxAttemps) {
-				this.activity.clear();
+				this.activity._clear();
 				this.closed = true;
 				console.log(`Connection closed to ${this.client.id}`);
 			}
-		});
+		}, this.time);
 	}
 }
 module.exports = ConnectionManager;

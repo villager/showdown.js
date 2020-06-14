@@ -1,45 +1,17 @@
 "use strict";
 
 const request = require('request');
+const Utils = require('../utils');
 
 class LoginManager {
     constructor(client) {
         this.challenge = '';
         this.challengekeyid = '';
-        this.client = client;
+        Object.defineProperty(this, 'client', {value: client});
     }
 	login(name, pass) {
 		let options;
-		if (pass !== '') {
-			options = {
-				headers: {
-					'content-type': 'application/x-www-form-urlencoded',
-				},
-				url: 'http://play.pokemonshowdown.com/action.php',
-				body:
-					'act=login&name=' +
-					encodeURIComponent(name) +
-					'&pass=' +
-					encodeURIComponent(pass) +
-					'&challengekeyid=' +
-					this.challengekeyid +
-					'&challenge=' +
-					this.challenge,
-			};
-			request.post(options, callback);
-		} else {
-			options = {
-				url:
-					'http://play.pokemonshowdown.com/action.php?act=getassertion&userid=' +
-					toId(name) +
-					'&challengekeyid=' +
-					this.challengekeyid +
-					'&challenge=' +
-					this.challenge,
-			};
-			request(options, callback);
-		}
-		/**
+				/**
 		 * @param {Error} error
 		 * @param {string} response
 		 * @param {string} body
@@ -64,17 +36,47 @@ class LoginManager {
 			try {
 				const json = JSON.parse(body.substr(1, body.length));
 				if (json.actionsuccess) {
-					this.client.status.named = true;
-                    this.client.send(`/trn ${name},0,${json['assertion']}`);
+					this.client.socket.setNamed();
+                    this.client.socket.send(`/trn ${name},0,${json['assertion']}`);
                     return true;
 				} else {
                     throw Error(`Could not log in ${this.client.id}`);
 				}
 			} catch (e) {
-				this.client.status.named = true;
-                this.client.send(`/trn ${name},0,${body}`);
+				this.client.socket.setNamed();
+                this.client.socket.send(`/trn ${name},0,${body}`);
                 return true;
 			}
+		}
+
+		if (pass !== '') {
+			options = {
+				headers: {
+					'content-type': 'application/x-www-form-urlencoded',
+				},
+				url: 'http://play.pokemonshowdown.com/action.php',
+				body:
+					'act=login&name=' +
+					encodeURIComponent(name) +
+					'&pass=' +
+					encodeURIComponent(pass) +
+					'&challengekeyid=' +
+					this.challengekeyid +
+					'&challenge=' +
+					this.challenge,
+			};
+			request.post(options, callback);
+		} else {
+			options = {
+				url:
+					'http://play.pokemonshowdown.com/action.php?act=getassertion&userid=' +
+					Utils.toId(name) +
+					'&challengekeyid=' +
+					this.challengekeyid +
+					'&challenge=' +
+					this.challenge,
+			};
+			request(options, callback);
 		}
 	}
 }

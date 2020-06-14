@@ -5,6 +5,7 @@ const RoomManager = require('../managers/cache/rooms');
 const UserManager = require('../managers/cache/users');
 const FormatsManager = require('../managers/cache/formats');
 const SocketManager = require('./websocket');
+const LoginManager = require('../managers/login');
 const UserBot = require('../structures/bot');
 
 class Client extends BaseClient {
@@ -31,13 +32,24 @@ class Client extends BaseClient {
         /** @type {UserBot} **/
         this.user = new UserBot(this);
 
+        /** @type {LoginManager} **/
+        this._login = new LoginManager(this);
+
         this.socket.on();
 
-        this.on("disconnect", (e) => {
+        this.on("disconnect", (err) => {
             console.log('Bot Disconnected' + (err ? ' | ' + err.code + ': ' + err.message : ''));
             if (this.socket.connection.closed || this.socket.connection.connecting || this.socket.connection.connected) return;
             this.socket.reconnect();
         });
+    }
+    /**
+     * Log into the server
+     * @param {string} name 
+     * @param {string?} pass 
+     */
+    login(name, pass) {
+        this._login.login(name, pass);
     }
     /**
      * Event of parseLine, use callback as a function () => {}
@@ -52,6 +64,7 @@ class Client extends BaseClient {
     $validation() {
 
     }
+    loadCommands() {}
 }
 
 module.exports = Client;

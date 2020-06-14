@@ -9,6 +9,7 @@ class FormatsManager extends BaseCache {
      * @constructor
      */
     constructor() {
+		super();
 		/** @type {Map<string, AnyObject>|null} */
 		this.aliases = new BaseCache();
     }

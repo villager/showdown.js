@@ -7,6 +7,9 @@ class ParserManager {
     get commands() {
         return this.client.commands;
     }
+    parse() {
+        
+    }
 }
 
 module.exports = ParserManager;

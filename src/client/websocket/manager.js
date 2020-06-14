@@ -17,7 +17,10 @@ class SocketManager {
     }
     getSendId() {
 		return this.nextSend++;
-	}
+    }
+    setNamed() {
+        this.connection.status.named = true;
+    }
     destroy(e) {
         if (this.socket) {
             this.socket.close();
@@ -53,7 +56,8 @@ class SocketManager {
 				data = JSON.stringify(data);
 			}
 			this.client.emit('message', data);
-			this.chat.receive(data);
+            this.chat.receive(data);
+            console.log(data);
 			this.connection.activity.date = Date.now();
         };
 		this.connection.connecting = true;
@@ -70,7 +74,7 @@ class SocketManager {
 		for (let i = 0; i < data.length; i++) {
 			data[i] = room + '|' + data[i];
 		}
-		return this.rawSend(data);
+		return this.sendBase(data);
     }
     /**
      * Primitive send
@@ -85,7 +89,7 @@ class SocketManager {
 			3,
 			msg => {
 				this.socket.send(msg);
-				this.emit('send', msg);
+				this.client.emit('send', msg);
 			},
 			() => {
 				delete this.sending[id];

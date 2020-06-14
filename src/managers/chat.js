@@ -1,6 +1,8 @@
 "use strict";
 
 const DEFAULT_ROOM = 'lobby';
+const ParserManager = require('./parser');
+const Utils = require('../utils');
 
 class ChatManager {
     constructor(client) {
@@ -37,12 +39,12 @@ class ChatManager {
     }
 	parseLine(roomid, data, isInit) {
 		const splittedLine = data.substr(1).split('|');
-		this.client.emit('parseLine', this, roomid, data, isInit, splittedLine);
+		this.client.emit('parseLine', roomid, data, isInit, splittedLine);
 		switch (splittedLine[0]) {
 			case 'formats':
 				const formats = data.substr(splittedLine[0].length + 2);
-				this.updateFormats(formats);
-				this.emit('formats', formats);
+				this.client.formats.update(formats);
+				this.client.emit('formats', formats);
 				break;
 			case 'challstr':
 				this.client._login.challengekeyid = splittedLine[1];
@@ -58,12 +60,11 @@ class ChatManager {
 				this.parser.parse(this.rooms[roomid], splittedLine[1], splittedLine.slice(2).join('|'), false);
 				break;
 			case 'updateuser':
-				if (toId(splittedLine[1]) !== toId(this.name)) return;
+				if (Utils.toId(splittedLine[1]) !== Utils.toId(this.name)) return;
 				this.send('/cmd rooms');
-				const cmds = Plugins.initCmds();
 				for (const cmd of cmds) this.send(cmd);
 				if (!this.joinedRooms && splittedLine[2] === '1') {
-					this.roomManager.onBegin();
+				//	this.roomManager.onBegin();
 				}
 				break;
 			case 'pm':
@@ -83,11 +84,11 @@ class ChatManager {
 					type: splittedLine[1],
 				});
 				this.roomCount = Object.keys(this.rooms).length;
-				this.emit('joinRoom', roomid, this.rooms[roomid].type);
+				this.client.emit('joinRoom', roomid, this.rooms[roomid].type);
 				break;
 			case 'deinit':
 				if (this.rooms[roomid]) {
-					this.emit('leaveRoom', this.rooms[roomid]);
+					this.client.emit('leaveRoom', this.rooms[roomid]);
 					delete this.rooms[roomid];
 					this.roomCount = Object.keys(this.rooms).length;
 				}
@@ -109,13 +110,16 @@ class ChatManager {
 				switch (splittedLine[1]) {
 					case 'userdetails':
 						const data = JSON.parse(splittedLine[2]);
-						if (data.id !== toId(this.name)) {
+						if (data.id !== Utils.toId(this.name)) {
 							const data = JSON.parse(splittedLine[2]);
 							if (data.group) this.group = data.group;
 						}
 						break;
 					case 'rooms':
 						if (splittedLine[2] === 'null') break;
+						for (const room of this.client.baseRooms) {
+							this.client.socket.send(`/join ${room}`);
+						}
 						// @ts-ignore
 						const roomData = JSON.parse(splittedLine.slice(2));
 						if (!roomList[this.id]) {

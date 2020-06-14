@@ -1,6 +1,5 @@
 "use strict";
 
-const LoginManager = require('../managers/login');
 const {EventEmitter} = require('events');
 
 const DEFAULT_SERVER = {
@@ -18,8 +17,7 @@ class BaseClient extends EventEmitter {
     constructor(options = {}) {
         super();
 
-        if (!options) Object.assign(options, DEFAULT_SERVER);
-
+        if (!options.port || !options.host) Object.assign(options, DEFAULT_SERVER);
         /** @type {number} **/
         this.port = options.port;
 
@@ -29,25 +27,13 @@ class BaseClient extends EventEmitter {
         if (options.id) this._id = options.id;
 
         /** @type {StatusManager} **/
-        this.status = new StatusManager();
+       // this.status = new StatusManager();
 
-        /** @type {LoginManager} **/
-        this._login = new LoginManager();
-
-        for (const [key, value] of options) {
-            if (this[key] || key ===  `id`) continue;
-            /** @type {any} **/
-            this[key] = value;
+        for (let i in options) {
+            if (this[i] || i === 'id') continue;
+            /** @type {any} */
+            this[i] = options[i];
         }
-    }
-
-    /**
-     * Log into the server
-     * @param {string} name 
-     * @param {string?} pass 
-     */
-    login(name, pass) {
-        this._login(name, pass);
     }
 
     /**
