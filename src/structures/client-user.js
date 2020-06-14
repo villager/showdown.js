@@ -11,23 +11,35 @@ class User {
     constructor(data, client) {
         /** @type {string} */
         this.name = "";
+
         /** @type {string} */
         this.group = " ";
+
         /** @type {Boolean} */
         this.connected = false;
+
         /** @type {string[]} */
         this.rooms = new Utils.Set();
+
         /** @type {null|string} */
         this.lastMessage = null;
+
         /** @type {number} **/
         this.lastSeen = null;
+
         /** @type {string | number} **/
         this.avatar = null;
+
         /** @type {string} **/
         this.idle = false;
+
         /** @type {string} **/
         this.status = "";
+
+        /** @type {boolean} */
         this.blockChallenges = false;
+
+        /** @type {boolean} */
         this.blockPMs = false;
 
         this.init(data);
