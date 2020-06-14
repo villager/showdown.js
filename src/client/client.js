@@ -7,6 +7,11 @@ const SocketManager = require('./websocket');
 const UserBot = require('../structures/bot');
 
 class Client extends BaseClient {
+    /**
+     * Our core client
+     * @constructor
+     * @param {AnyObject} options 
+     */
     constructor(options) {
         super(options);
 
@@ -47,6 +52,9 @@ class Client extends BaseClient {
         this.users.cache.clear();
 		this.manager.conntime = 0;
     }
+    /**
+     * Validations of data
+     */
     $validation() {
 
     }

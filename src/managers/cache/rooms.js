@@ -2,12 +2,19 @@ const BaseCache = require('./base');
 const Room = require('../../structures/room');
 
 class RoomManager extends BaseCache {
+    /**
+     * Our Manager of rooms
+     * @constructor
+     * @param {Client} client 
+     */
     constructor(client) {
         super();
         Object.defineProperty(this, 'client', {value: client});
     }
     /**
-     * @param {Object} data 
+     * Create a new room in the cache
+     * @param {Object} data
+     * @throws {Error} If the room already exist
      */
     create(data) {
         if (this.has(data.name)) return; // Thow error already exist
@@ -15,13 +22,16 @@ class RoomManager extends BaseCache {
         this.client.send(`/join ${data.name}`)
     }
     /**
+     * Remove a room in the cache
      * @param {String} id 
+     * @throws {Error} Throw if the room does not exist
      */
     remove(id) {
         if (!this.has(id)) return; // Throw error no room exist
         super.remove(id);
     }
     /**
+     * Get room's name
      * @param {String} id 
      */
     resolveName(id) {
@@ -29,6 +39,7 @@ class RoomManager extends BaseCache {
         return this.get(id).name;
     }
     /**
+     * Get room's id
      * @param {String} user 
      */
     resolve(user) {
