@@ -14,6 +14,8 @@ class User {
         this.avatar = null;
         this.idle = false;
         this.status = "";
+        this.blockChallenges = false;
+        this.blockPMs = false;
 
         this.init(data);
         Object.defineProperty(this, 'client', {value: client});
@@ -40,6 +42,8 @@ class User {
         this.connected = true;
         this.lastMessage = "";
         this.idle = false;
+        this.blockChallenges = false;
+        this.blockPMs = false;
         this.update();
     }
 
