@@ -10,6 +10,9 @@ class Room {
         /** @type {Set} */
         this.subRooms = null;
         this.language = "english"
+        this.modjoin = null;
+        this.modchat = null;
+        this.visivility = null;
         Object.defineProperty(this, 'client', {value: client});
         this.init(data);
     }

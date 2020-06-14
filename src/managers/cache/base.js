@@ -8,7 +8,7 @@ class BaseCache {
     * @constructor
     */
     constructor() {
-        /** @type {Room[] | User[]} */
+        /** @type {Room[] | User[] | Formats[]} */
         this.cache = Util.Map();
     }
     /**

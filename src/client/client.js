@@ -3,6 +3,7 @@
 const BaseClient = require('./base');
 const RoomManager = require('../managers/cache/rooms');
 const UserManager = require('../managers/cache/users');
+const FormatsManager = require('../managers/cache/formats');
 const SocketManager = require('./websocket');
 const UserBot = require('../structures/bot');
 
@@ -24,6 +25,9 @@ class Client extends BaseClient {
         /** @type {RoomManager} **/
         this.rooms = new RoomManager(this);
 
+        /** @type {FormatsManager} */
+        this.formats = new FormatsManager();
+
         /** @type {UserBot} **/
         this.user = new UserBot(this);
 
@@ -41,16 +45,6 @@ class Client extends BaseClient {
      */
     parseLine(callback) {
         this.on("parseLine", callback);
-    }
-	reset() {
-		for (const k in this.sending) {
-			this.sending[k].kill();
-			delete this.sending[k];
-		}
-        this.nextSend = 0;
-        this.rooms.cache.clear();
-        this.users.cache.clear();
-		this.manager.conntime = 0;
     }
     /**
      * Validations of data
