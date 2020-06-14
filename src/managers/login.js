@@ -68,7 +68,7 @@ class LoginManager {
                     this.client.send(`/trn ${name},0,${json['assertion']}`);
                     return true;
 				} else {
-                    throw Error(`'Could not log in ${this.client.id}`);
+                    throw Error(`Could not log in ${this.client.id}`);
 				}
 			} catch (e) {
 				this.client.status.named = true;

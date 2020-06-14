@@ -5,7 +5,7 @@ const {EventEmitter} = require('events');
 const DEFAULT_SERVER = {
     port: 8000,
     host: "sim.smogon.com",
-    id: "Showdown"
+    id: "Showdown",
 };
 
 class BaseClient extends EventEmitter {
@@ -18,6 +18,10 @@ class BaseClient extends EventEmitter {
         this.status = new StatusManager();
         this._login = new LoginManager();
         this.socket = new SocketManager(this);
+        for (const [key, value] of options) {
+            if (this[key] || key ===  `id`) continue;
+            this[key] = value;
+        }
     }
     async login(name, pass) {
         this._login(name, pass);

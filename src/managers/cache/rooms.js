@@ -7,17 +7,12 @@ class RoomManager extends BaseCache {
         Object.defineProperty(this, 'client', {value: client});
     }
     /**
-     * @param {String} data 
-     */
-    send(data) {
-        this.client.send(data);
-    }
-    /**
      * @param {Object} data 
      */
     create(data) {
         if (this.has(data.name)) return; // Thow error already exist
         super.set(data.name, new Room(data, this.client));
+        this.client.send(`/join ${data.name}`)
     }
     /**
      * @param {String} id 

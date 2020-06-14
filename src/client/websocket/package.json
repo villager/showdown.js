@@ -1,11 +1,14 @@
 {
-    "name": "client",
+    "name": "web-socket",
     "version": "1.0.0",
-    "main": "client.js",
+    "main": "manager.js",
     "author": {
         "name": "Aldair Beltran",
         "email": "aldairbeltran23@hotmail.com",
         "url": "https://github.com/villager"
+    },
+    "dependencies": {
+        "sockjs-client": "^1.4.0"
     },
     "private": true
 }
