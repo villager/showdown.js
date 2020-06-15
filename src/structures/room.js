@@ -26,7 +26,7 @@ class Room {
         this.modchat = null;
 
         /** @type {string} */
-        this.visivility = null;
+        this.visibility = null;
 
         /** @type {Map<string, Set>|null} */
         this.auth = null;
@@ -47,20 +47,40 @@ class Room {
     update(data) {
         if (data.language) this.language = data.language;
         if (data.name) this.name = data.name;
+        if (data.modchat) this.modchat = data.modchat;
+        if (data.modjoin) this.modjoin = data.modjoin;
+        if (data.visibility) this.visibility = data.visibility
         if (data.users) this.updateUsers(data.users);
         if (data.auth) this.updateAuth(data.auth)
     }
 
+    /**
+     * 
+     * @param {Set} arr
+     * @returns {void}
+     */
     updateUsers(arr) {}
+
+    /**
+     * 
+     * @param {Map<string, Set>} auth
+     * @returns {void}
+     */
+    updateAuth(auth) {}
 
     init(data) {
         this.name = data.name;
+        this.type = data.type;
+        this.modjoin = data.modjoin || null;
+        this.modchat = data.modchat || null;
+        this.visibility = data.visibility || "hidden";
+
         this.users = new Utils.Set();
         this.subRooms = new Utils.Set();
         this.auth = new Utils.Map();
-        this.type = data.type;
     }
 
+    /** @returns {JSON} */
     toJSON() {
         let json = Object.create(null);
         for (const [key, value] of this) {
