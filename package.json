@@ -1,6 +1,6 @@
 {
     "name": "showdown.js",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "keywords": [
         "Pokemon Showdown",
         "ps.js",
@@ -8,6 +8,7 @@
         "bot"
     ],
     "main": "./src/index",
+    "license": "MIT",
     "author": {
         "name": "Aldair Beltran",
         "email": "aldairbeltran23@hotmail.com",

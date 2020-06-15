@@ -2,6 +2,7 @@
 
 const Utils = require('../../utils');
 const BaseCache = require('./base');
+const AliasesManager = require('./aliases');
 
 class FormatsManager extends BaseCache {
     /**
@@ -11,16 +12,10 @@ class FormatsManager extends BaseCache {
     constructor() {
 		super();
 		/** @type {Map<string, AnyObject>|null} */
-		this.aliases = new BaseCache();
+		this.aliases = new AliasesManager();
     }
     loadAliases(aliases) {
-        if (typeof aliases !== 'object') {
-            // throw error
-        } else {
-            for (const [key, value] of aliases) {
-                this.aliases.create(key, value);
-            }
-        }
+		return this.aliases.load(aliases);
 	}
 	parseAliases(format) {
 		if (!format) return '';

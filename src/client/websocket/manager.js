@@ -57,7 +57,6 @@ class SocketManager {
 			}
 			this.client.emit('message', data);
             this.chat.receive(data);
-            console.log(data);
 			this.connection.activity.date = Date.now();
         };
 		this.connection.connecting = true;

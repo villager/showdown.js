@@ -2,12 +2,14 @@
 
 const DEFAULT_ROOM = 'lobby';
 const ParserManager = require('./parser');
+const RoomListManager = require('./roomlist');
 const Utils = require('../utils');
 
 class ChatManager {
     constructor(client) {
         Object.defineProperty(this, 'client', {value: client});
-        this.parser = new ParserManager(client);
+		this.parser = new ParserManager(client);
+		this.roomlist = new RoomListManager(client);
     }
     receive(msg) {
 		this.client.emit('message', msg);
@@ -64,11 +66,6 @@ class ChatManager {
 			case 'updateuser':
 				if (Utils.toId(splittedLine[1]) !== Utils.toId(this.client.name)) return;
 				this.client.socket.send('/cmd rooms');
-				if (!this.joinedRooms && splittedLine[2] === '1') {
-					for (const room of this.client.baseRooms) {
-						this.client.socket.send(`/join ${room}`);
-					}
-				}
 				break;
 			case 'pm':
 				this.parser.parse(roomid, splittedLine[1], splittedLine.slice(3).join('|'), true);
@@ -97,9 +94,7 @@ class ChatManager {
 				}
 				break;
 			case 'title':
-				console.log(this.client.rooms.has(roomid))
 				if (this.client.rooms.has(roomid)) {
-					console.log(this.client.rooms.get(roomid));
 					this.client.rooms.get(roomid).update({
 						name: splittedLine[1]
 					});
@@ -125,32 +120,23 @@ class ChatManager {
 						}
 						break;
 					case 'roominfo':
-						console.log(splittedLine);
 						break;
 					case 'rooms':
 						if (splittedLine[2] === 'null') break;
 						// @ts-ignore
 						const roomData = JSON.parse(splittedLine.slice(2));
-	/*					if (!roomList[this.id]) {
-							roomList[this.id] = {};
-						}
+						
 						for (const i in roomData['official']) {
-							if (!roomList[this.id].isOfficial) roomList[this.id].isOfficial = [];
-							roomList[this.id].isOfficial.push(roomData['official'][i].title);
+							if (!this.roomlist.isOfficial.has(roomData['official'][i].title)) {
+								this.roomlist.isOfficial.add(roomData['official'][i].title);
+							}
 						}
 						for (const i in roomData['chat']) {
-							if (!roomList[this.id].isChat) roomList[this.id].isChat = [];
-							roomList[this.id].isChat.push(roomData['chat'][i].title);
-						}
-						if (!this.joinedRooms) {
-							if (this.baseRooms[0] === 'all') {
-								this.joinAllRooms();
-								this.joinedRooms = true;
-							} else if (this.baseRooms === 'official') {
-								this.joinAllRooms();
-								this.joinedRooms = true;
+							if (!this.roomlist.isChat.has(roomData['chat'][i].title)) {
+								this.roomlist.isChat.add(roomData['chat'][i].title);
 							}
-						}*/
+						}
+						this.roomlist.check();
 						break;
 				}
 				break;
