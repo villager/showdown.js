@@ -45,6 +45,9 @@ class User extends BaseUser {
             this.group = data.group;
         }
     }
+    send(data) {
+        return this.client.send(`/msg ${this.id}, ${data}`);
+    }
 
     /**
      * Initializacion of the user

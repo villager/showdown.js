@@ -60,7 +60,9 @@ class Room {
      * @returns {void}
      */
     updateUsers(arr) {}
-
+    send(data) {
+        this.client.socket.send(data, this.id);
+    }
     /**
      * 
      * @param {Map<string, Set>} auth

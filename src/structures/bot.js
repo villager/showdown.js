@@ -1,3 +1,7 @@
+"use strict";
+
+const Utils = require('../utils');
+
 class User {
     /**
      * Class for the bot as user
@@ -30,7 +34,7 @@ class User {
      * @return {string} Returns an string
     */
     get id() {
-        return this.name;
+        return Utils.toId(this.name);
     }
     /**
      * Update Bot's info

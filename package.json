@@ -18,9 +18,19 @@
         "type": "git",
         "url": "git+https://github.com/villager/showdown.js.git"
     },
+    "scripts": {
+        "lint": "eslint . --config .eslintrc.json --cache --ext .js,.ts"
+    },
     "dependencies": {
         "request": "^2.88.2",
         "sockjs-client": "^1.4.0"
     },
-    "private": false
+    "devDependencies": {
+        "eslint": "^7.2.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-plugin-import": "^2.21.2",
+        "eslint-plugin-prettier": "^3.1.4",
+        "husky": "^4.2.5",
+        "prettier": "^2.0.5"
+    }
 }

@@ -16,7 +16,6 @@ class Client extends BaseClient {
      */
     constructor(options) {
         super(options);
-
         /** @type {SocketManager} **/
         this.socket = new SocketManager(this);
 
@@ -40,6 +39,9 @@ class Client extends BaseClient {
             if (this.socket.connection.closed || this.socket.connection.connecting || this.socket.connection.connected) return;
             this.socket.reconnect();
         });
+    }
+    send(data, room) {
+        this.socket.send(data, room);
     }
     connect() {
         return this.socket.on();

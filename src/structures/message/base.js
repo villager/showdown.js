@@ -7,7 +7,7 @@ class Channel {
         this.type = options.type;
     }
     send(data, room) {
-        return this.client.socket.send(data, room);
+        return this.client.send(data, room);
     }
 }
 module.exports = Channel;
