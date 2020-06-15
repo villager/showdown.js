@@ -55,7 +55,6 @@ class SocketManager {
 			if (typeof data !== 'string') {
 				data = JSON.stringify(data);
 			}
-			this.client.emit('message', data);
             this.chat.receive(data);
 			this.connection.activity.date = Date.now();
         };

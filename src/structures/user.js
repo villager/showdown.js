@@ -33,8 +33,17 @@ class User extends BaseUser {
      * Update user's info
      * @param {AnyObject} data
      */
-    update(data) {
+    update(data = {}) {
         this.lastSeen = Date.now();
+        if (data.avatar) {
+            this.avatar = data.avatar;
+        }
+        if (data.status) {
+            this.status = data.status;
+        }
+        if (data.group) {
+            this.group = data.group;
+        }
     }
 
     /**
@@ -44,8 +53,8 @@ class User extends BaseUser {
     init(data) {
         if (data.name) this.name = data.name;
         if (data.group) this.group = data.group;
-        this.avatar = data.avatar || 1;
-        this.status = data.status || "";
+        this.avatar = 1;
+        this.status = "";
         this.connected = true;
         this.lastMessage = "";
         this.idle = false;

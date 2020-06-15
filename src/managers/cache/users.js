@@ -4,6 +4,7 @@
 
 const BaseCache = require('./base');
 const User = require('../../structures/user');
+const Utils = require('../../utils');
 
 class UserManager extends BaseCache {
     constructor(client) {
@@ -26,7 +27,15 @@ class UserManager extends BaseCache {
      */
     create(data) {
         if (this.has(data.name)) return; // Error User already Exist
-        super.create(data.name, new User(data, this.client));
+        super.create(Utils.toId(data.name), new User(data, this.client));
+    }
+    check(user) {
+        this.client.socket.send(`/cmd userdetails ${user}`);
+    }
+    update(user, data) {
+        user = Utils.toId(user);
+        if (!this.has(user)) return null;
+        return this.get(user).update(data);
     }
     /**
      * Get user's name

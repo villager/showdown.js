@@ -35,13 +35,14 @@ class Client extends BaseClient {
         /** @type {LoginManager} **/
         this._login = new LoginManager(this);
 
-        this.socket.on();
-
-        this.on("disconnect", (err) => {
+        this.on("disconnect", err => {
             console.log('Bot Disconnected' + (err ? ' | ' + err.code + ': ' + err.message : ''));
             if (this.socket.connection.closed || this.socket.connection.connecting || this.socket.connection.connected) return;
             this.socket.reconnect();
         });
+    }
+    connect() {
+        return this.socket.on();
     }
     /**
      * Log into the server

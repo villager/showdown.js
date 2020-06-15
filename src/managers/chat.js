@@ -1,18 +1,17 @@
 "use strict";
 
 const DEFAULT_ROOM = 'lobby';
-const ParserManager = require('./parser');
 const RoomListManager = require('./roomlist');
+const PMChannel = require('../structures/message/pm');
+const RoomChannel = require('../structures/message/chat');
 const Utils = require('../utils');
 
 class ChatManager {
     constructor(client) {
         Object.defineProperty(this, 'client', {value: client});
-		this.parser = new ParserManager(client);
 		this.roomlist = new RoomListManager(client);
     }
     receive(msg) {
-		this.client.emit('message', msg);
 		this.receiveMsg(msg);
     }
 	receiveMsg(msg) {
@@ -41,6 +40,7 @@ class ChatManager {
     }
 	parseLine(roomid, data, isInit) {
 		const splittedLine = data.substr(1).split('|');
+		let channel;
 		this.client.emit('parseLine', roomid, data, isInit, splittedLine);
 		switch (splittedLine[0]) {
 			case 'formats':
@@ -56,19 +56,53 @@ class ChatManager {
 			case 'c:':
 				if (isInit) break;
 				if (!this.client.rooms.has(roomid)) return // Shouldn't happened - throw error
-				this.parser.parse(this.client.rooms.get(roomid), splittedLine[2], splittedLine.slice(3).join('|'), false);
+				if (!this.client.users.has(splittedLine[2])) {
+					this.client.users.create({
+						name: splittedLine[2],
+					});
+				}
+				this.client.users.check(splittedLine[2]);
+				channel = new RoomChannel(this.client, {
+					room: roomid,
+					type: "ROOM",
+					date: splittedLine[1],
+					user: splittedLine[2],
+					content: splittedLine.slice(3).join('|'),
+				});
 				break;
 			case 'c':
 				if (isInit) break;
 				if (!this.client.rooms.has(roomid)) return // Shouldn't happened - throw error
-				this.parser.parse(this.client.rooms.get(roomid), splittedLine[1], splittedLine.slice(2).join('|'), false);
+				if (!this.client.users.has(splittedLine[1])) {
+					this.client.users.create({
+						name: splittedLine[1],
+					});
+				}
+				this.client.users.check(splittedLine[1]);
+				channel = new RoomChannel(this.client, {
+					room: roomid,
+					type: "ROOM",
+					date: Date.now(),
+					user: splittedLine[1],
+					content: splittedLine.slice(2).join('|'),
+				});
 				break;
 			case 'updateuser':
 				if (Utils.toId(splittedLine[1]) !== Utils.toId(this.client.name)) return;
 				this.client.socket.send('/cmd rooms');
 				break;
 			case 'pm':
-				this.parser.parse(roomid, splittedLine[1], splittedLine.slice(3).join('|'), true);
+				if (!this.client.users.has(splittedLine[1])) {
+					this.client.users.create({
+						name: splittedLine[1],
+					});
+				}
+				this.client.users.check(splittedLine[1]);
+				channel = new PMChannel(this.client, {
+					type: "PM",
+					user: splittedLine[1],
+					content: splittedLine.slice(3).join('|'),
+				});
 				break;
 			case 'join':
 			case 'j':
@@ -87,10 +121,9 @@ class ChatManager {
 				this.client.socket.send('/cmd roominfo ' + roomid);
 				break;
 			case 'deinit':
-				if (this.rooms[roomid]) {
-					this.client.emit('leaveRoom', this.rooms[roomid]);
-					delete this.rooms[roomid];
-					this.roomCount = Object.keys(this.rooms).length;
+				if (this.client.rooms.has(roomid)) {
+					this.client.emit('leaveRoom', this.client.rooms.get(roomid));
+					this.client.rooms.remove(roomid);
 				}
 				break;
 			case 'title':
@@ -114,9 +147,17 @@ class ChatManager {
 				switch (splittedLine[1]) {
 					case 'userdetails':
 						const data = JSON.parse(splittedLine[2]);
-						if (data.id !== Utils.toId(this.name)) {
+						if (data.id === Utils.toId(this.client.name)) {
 							const data = JSON.parse(splittedLine[2]);
 							if (data.group) this.group = data.group;
+						} else {
+							this.client.users.update(data.id, {
+								name: data.name,
+								group: data.group,
+								avatar: data.avatar,
+								autoconfirmed: data.autoconfirmed,
+								status: data.status,
+							});
 						}
 						break;
 					case 'roominfo':
@@ -149,6 +190,7 @@ class ChatManager {
 				//this.logChat(toId(roomid), parts.slice(2).join("|"));
 				break;
 		}
+		if(channel !== undefined) this.client.emit('message', channel);
 	}
 }
 

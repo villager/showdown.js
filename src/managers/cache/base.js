@@ -1,6 +1,6 @@
 "use strict";
 
-const Util = require('../../utils');
+const Utils = require('../../utils');
 
 class BaseCache {
     /** 
@@ -9,7 +9,7 @@ class BaseCache {
     */
     constructor() {
         /** @type {Room[] | User[] | Formats[]} */
-        this.cache = new Util.Map();
+        this.cache = new Utils.Map();
     }
     /**
      * Create a new element in the cache
@@ -17,6 +17,7 @@ class BaseCache {
      * @param {any} arg 
      */
     create(id, arg) {
+        id = Utils.toId(id);
         if (this.has(id)) return false;
         this.cache.set(id, arg);
     }
@@ -25,6 +26,7 @@ class BaseCache {
      * @param {String} id 
      */
     remove(id) {
+        id = Utils.toId(id);
         if (!this.has(id)) return false;
         this.cache.remove(id);
     }
@@ -34,6 +36,7 @@ class BaseCache {
      * @returns {Boolean} Returns a Boolean
      */
     has(id) {
+        id = Utils.toId(id);
         if (!this.cache.has(id)) return false;
         return true;
     }
@@ -43,6 +46,7 @@ class BaseCache {
      * @returns {(User|Room)} Return the data from the cache
      */
     get(id) {
+        id = Utils.toId(id);
         if (!this.has(id)) return false;
         return this.cache.get(id);
     }
