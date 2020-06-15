@@ -9,6 +9,7 @@ class Room {
         this.users = null;
         /** @type {Set} */
         this.subRooms = null;
+        this.type = ' ';
         this.language = "english"
         this.modjoin = null;
         this.modchat = null;
@@ -23,7 +24,7 @@ class Room {
     }
 
     get id() {
-        return this.name;
+        return Utils.toId(this.name);
     }
 
     update(data) {
@@ -38,6 +39,7 @@ class Room {
         this.name = data.name;
         this.users = new Utils.Set();
         this.subRooms = new Utils.Set();
+        this.type = data.type;
     }
 
     toJSON() {

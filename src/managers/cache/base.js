@@ -34,7 +34,7 @@ class BaseCache {
      * @returns {Boolean} Returns a Boolean
      */
     has(id) {
-        if (this.cache.has(id)) return false;
+        if (!this.cache.has(id)) return false;
         return true;
     }
     /**

@@ -1,5 +1,6 @@
 const BaseCache = require('./base');
 const Room = require('../../structures/room');
+const Utils = require('../../utils');
 
 class RoomManager extends BaseCache {
     /**
@@ -18,8 +19,7 @@ class RoomManager extends BaseCache {
      */
     create(data) {
         if (this.has(data.name)) return; // Thow error already exist
-        super.set(data.name, new Room(data, this.client));
-        this.client.send(`/join ${data.name}`)
+        super.create(Utils.toId(data.name), new Room(data, this.client));
     }
     /**
      * Remove a room in the cache

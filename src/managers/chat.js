@@ -53,18 +53,21 @@ class ChatManager {
 				break;
 			case 'c:':
 				if (isInit) break;
-				this.parser.parse(this.rooms[roomid], splittedLine[2], splittedLine.slice(3).join('|'), false);
+				if (!this.client.rooms.has(roomid)) return // Shouldn't happened - throw error
+				this.parser.parse(this.client.rooms.get(roomid), splittedLine[2], splittedLine.slice(3).join('|'), false);
 				break;
 			case 'c':
 				if (isInit) break;
-				this.parser.parse(this.rooms[roomid], splittedLine[1], splittedLine.slice(2).join('|'), false);
+				if (!this.client.rooms.has(roomid)) return // Shouldn't happened - throw error
+				this.parser.parse(this.client.rooms.get(roomid), splittedLine[1], splittedLine.slice(2).join('|'), false);
 				break;
 			case 'updateuser':
-				if (Utils.toId(splittedLine[1]) !== Utils.toId(this.name)) return;
-				this.send('/cmd rooms');
-				for (const cmd of cmds) this.send(cmd);
+				if (Utils.toId(splittedLine[1]) !== Utils.toId(this.client.name)) return;
+				this.client.socket.send('/cmd rooms');
 				if (!this.joinedRooms && splittedLine[2] === '1') {
-				//	this.roomManager.onBegin();
+					for (const room of this.client.baseRooms) {
+						this.client.socket.send(`/join ${room}`);
+					}
 				}
 				break;
 			case 'pm':
@@ -80,11 +83,11 @@ class ChatManager {
 				if (isInit) break; // no nos interesa del pasado
 				break;
 			case 'init':
-				this.rooms[roomid] = new Room(roomid, {
+				this.client.rooms.create({
+					name: roomid,
 					type: splittedLine[1],
 				});
-				this.roomCount = Object.keys(this.rooms).length;
-				this.client.emit('joinRoom', roomid, this.rooms[roomid].type);
+				this.client.socket.send('/cmd roominfo ' + roomid);
 				break;
 			case 'deinit':
 				if (this.rooms[roomid]) {
@@ -94,14 +97,20 @@ class ChatManager {
 				}
 				break;
 			case 'title':
-				if (this.rooms[roomid]) {
-					this.rooms[roomid].updateTitle(splittedLine[1]);
+				console.log(this.client.rooms.has(roomid))
+				if (this.client.rooms.has(roomid)) {
+					console.log(this.client.rooms.get(roomid));
+					this.client.rooms.get(roomid).update({
+						name: splittedLine[1]
+					});
 				}
 				break;
 			case 'users':
-				if (this.rooms[roomid]) break;
+				if (!this.client.rooms.has(roomid)) break;
 				const userArr = data.substr(9).split(',');
-				this.rooms[roomid].updateUsers(userArr);
+				this.client.rooms.get(roomid).update({
+					users: userArr
+				});
 				break;
 			case 'raw':
 			case 'html':
@@ -115,14 +124,14 @@ class ChatManager {
 							if (data.group) this.group = data.group;
 						}
 						break;
+					case 'roominfo':
+						console.log(splittedLine);
+						break;
 					case 'rooms':
 						if (splittedLine[2] === 'null') break;
-						for (const room of this.client.baseRooms) {
-							this.client.socket.send(`/join ${room}`);
-						}
 						// @ts-ignore
 						const roomData = JSON.parse(splittedLine.slice(2));
-						if (!roomList[this.id]) {
+	/*					if (!roomList[this.id]) {
 							roomList[this.id] = {};
 						}
 						for (const i in roomData['official']) {
@@ -141,7 +150,7 @@ class ChatManager {
 								this.joinAllRooms();
 								this.joinedRooms = true;
 							}
-						}
+						}*/
 						break;
 				}
 				break;
