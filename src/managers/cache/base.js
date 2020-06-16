@@ -2,15 +2,7 @@
 
 const Utils = require('../../utils');
 
-class BaseCache {
-	/**
-	 * Base Cache
-	 * @constructor
-	 */
-	constructor() {
-		/** @type {Room[] | User[] | Formats[]} */
-		this.cache = new Utils.Map();
-	}
+class BaseCache extends Utils.Map {
 	/**
 	 * Create a new element in the cache
 	 * @param {String} id
@@ -19,7 +11,7 @@ class BaseCache {
 	create(id, arg) {
 		id = Utils.toId(id);
 		if (this.has(id)) return false;
-		this.cache.set(id, arg);
+		this.set(id, arg);
 	}
 	/**
 	 * Remove an element from the cache
@@ -28,7 +20,7 @@ class BaseCache {
 	remove(id) {
 		id = Utils.toId(id);
 		if (!this.has(id)) return false;
-		this.cache.remove(id);
+		this.remove(id);
 	}
 	/**
 	 * Check if a elment exists in the cache
@@ -37,7 +29,7 @@ class BaseCache {
 	 */
 	has(id) {
 		id = Utils.toId(id);
-		if (!this.cache.has(id)) return false;
+		if (!super.has(id)) return false;
 		return true;
 	}
 	/**
@@ -48,7 +40,7 @@ class BaseCache {
 	get(id) {
 		id = Utils.toId(id);
 		if (!this.has(id)) return false;
-		return this.cache.get(id);
+		return super.get(id);
 	}
 	/**
 	 * Make an iteration of each data
@@ -56,8 +48,5 @@ class BaseCache {
 	 * @param {any} thisArg
 	 * @returns {Function} Returns the function forEach of the cache
 	 */
-	forEach(callback, thisArg) {
-		return this.cache.forEach(callback, thisArg);
-	}
 }
 module.exports = BaseCache;
