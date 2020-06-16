@@ -1,27 +1,27 @@
-"use strict";
+'use strict';
 
 const Utils = require('../../utils');
 const BaseCache = require('./base');
 const AliasesManager = require('./aliases');
 
 class FormatsManager extends BaseCache {
-    /**
-     * Manager of formats
-     * @constructor
-     */
-    constructor() {
+	/**
+	 * Manager of formats
+	 * @constructor
+	 */
+	constructor() {
 		super();
 		/** @type {Map<string, AnyObject>|null} */
 		this.aliases = new AliasesManager();
-    }
-    loadAliases(aliases) {
+	}
+	loadAliases(aliases) {
 		return this.aliases.load(aliases);
 	}
 	parseAliases(format) {
 		if (!format) return '';
 		format = Utils.toId(format);
 		if (this.has(format)) return format;
-		if (this.aliases.has(format)) format = Utils.toId(aliases.get(format));
+		if (this.aliases.has(format)) format = Utils.toId(this.aliases.get(format));
 		return format;
 	}
 	update(formats) {
@@ -41,7 +41,13 @@ class FormatsManager extends BaseCache {
 				continue;
 			} else {
 				name = formatsArr[i];
-				formatData = {name: name, team: true, ladder: true, chall: true, disableTournaments: false};
+				formatData = {
+					name: name,
+					team: true,
+					ladder: true,
+					chall: true,
+					disableTournaments: false,
+				};
 				code = commaIndex >= 0 ? parseInt(name.substr(commaIndex + 1), 16) : NaN;
 				if (!isNaN(code)) {
 					name = name.substr(0, commaIndex);

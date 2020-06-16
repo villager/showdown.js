@@ -19,7 +19,24 @@
         "url": "git+https://github.com/villager/showdown.js.git"
     },
     "scripts": {
-        "lint": "eslint . --config .eslintrc.json --cache --ext .js,.ts"
+        "clean": "prettier --write \"*.{js,md}\" \"**/**/*.js\"",
+        "lint": "eslint . --config .eslintrc.json --cache --ext .js"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "singleQuote": true,
+        "quoteProps": "as-needed",
+        "trailingComma": "all",
+        "useTabs": true,
+        "bracketSpacing": false,
+        "proseWrap": "always",
+        "arrowParens": "avoid",
+        "endOfLine": "lf"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run lint"
+        }
     },
     "dependencies": {
         "request": "^2.88.2",

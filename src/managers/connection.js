@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
 const DEFAULT_TRY_RECONNECT = 30 * 1000;
 const ActivityManager = require('./activity');
 
 class ConnectionManager {
-    constructor(client) {
-        Object.defineProperty(this, 'client', {value: client});
+	constructor(client) {
+		Object.defineProperty(this, 'client', {value: client});
 		this.connecting = false;
 		this.status = {connected: false};
 		this.closed = false;

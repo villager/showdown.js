@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 
 class UtilMap extends Map {
-    toJSON() {
+	toJSON() {
 		return Array.from(this);
 	}
 }
 class UtilSet extends Set {
-    toJSON() {
-        return Array.from(this);
-    }
+	toJSON() {
+		return Array.from(this);
+	}
 }
 
 exports.Map = UtilMap;

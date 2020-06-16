@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const DEFAULT_ROOM = 'lobby';
 const RoomListManager = require('./roomlist');
@@ -7,13 +7,13 @@ const RoomChannel = require('../structures/message/chat');
 const Utils = require('../utils');
 
 class ChatManager {
-    constructor(client) {
-        Object.defineProperty(this, 'client', {value: client});
+	constructor(client) {
+		Object.defineProperty(this, 'client', {value: client});
 		this.roomlist = new RoomListManager(client);
-    }
-    receive(msg) {
+	}
+	receive(msg) {
 		this.receiveMsg(msg);
-    }
+	}
 	receiveMsg(msg) {
 		if (!msg) return;
 		if (msg.includes('\n')) {
@@ -37,7 +37,7 @@ class ChatManager {
 		} else {
 			this.parseLine(DEFAULT_ROOM, msg, false);
 		}
-    }
+	}
 	parseLine(roomid, data, isInit) {
 		const splittedLine = data.substr(1).split('|');
 		let channel;
@@ -55,7 +55,7 @@ class ChatManager {
 				break;
 			case 'c:':
 				if (isInit) break;
-				if (!this.client.rooms.has(roomid)) return // Shouldn't happened - throw error
+				if (!this.client.rooms.has(roomid)) return; // Shouldn't happened - throw error
 				if (!this.client.users.has(splittedLine[2])) {
 					this.client.users.create({
 						name: splittedLine[2],
@@ -64,7 +64,7 @@ class ChatManager {
 				this.client.users.check(splittedLine[2]);
 				channel = new RoomChannel(this.client, {
 					room: roomid,
-					type: "ROOM",
+					type: 'ROOM',
 					date: splittedLine[1],
 					user: splittedLine[2],
 					content: splittedLine.slice(3).join('|'),
@@ -72,7 +72,7 @@ class ChatManager {
 				break;
 			case 'c':
 				if (isInit) break;
-				if (!this.client.rooms.has(roomid)) return // Shouldn't happened - throw error
+				if (!this.client.rooms.has(roomid)) return; // Shouldn't happened - throw error
 				if (!this.client.users.has(splittedLine[1])) {
 					this.client.users.create({
 						name: splittedLine[1],
@@ -81,7 +81,7 @@ class ChatManager {
 				this.client.users.check(splittedLine[1]);
 				channel = new RoomChannel(this.client, {
 					room: roomid,
-					type: "ROOM",
+					type: 'ROOM',
 					date: Date.now(),
 					user: splittedLine[1],
 					content: splittedLine.slice(2).join('|'),
@@ -99,7 +99,7 @@ class ChatManager {
 				}
 				this.client.users.check(splittedLine[1]);
 				channel = new PMChannel(this.client, {
-					type: "PM",
+					type: 'PM',
 					user: splittedLine[1],
 					content: splittedLine.slice(3).join('|'),
 				});
@@ -129,7 +129,7 @@ class ChatManager {
 			case 'title':
 				if (this.client.rooms.has(roomid)) {
 					this.client.rooms.get(roomid).update({
-						name: splittedLine[1]
+						name: splittedLine[1],
 					});
 				}
 				break;
@@ -137,7 +137,7 @@ class ChatManager {
 				if (!this.client.rooms.has(roomid)) break;
 				const userArr = data.substr(9).split(',');
 				this.client.rooms.get(roomid).update({
-					users: userArr
+					users: userArr,
 				});
 				break;
 			case 'raw':
@@ -166,7 +166,7 @@ class ChatManager {
 						if (splittedLine[2] === 'null') break;
 						// @ts-ignore
 						const roomData = JSON.parse(splittedLine.slice(2));
-						
+
 						for (const i in roomData['official']) {
 							if (!this.roomlist.isOfficial.has(roomData['official'][i].title)) {
 								this.roomlist.isOfficial.add(roomData['official'][i].title);
@@ -190,8 +190,8 @@ class ChatManager {
 				//this.logChat(toId(roomid), parts.slice(2).join("|"));
 				break;
 		}
-		if(channel !== undefined) this.client.emit('message', channel);
+		if (channel !== undefined) this.client.emit('message', channel);
 	}
 }
 
-module.exports = ChatManager
+module.exports = ChatManager;
