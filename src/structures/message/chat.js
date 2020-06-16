@@ -14,12 +14,6 @@ class RoomChannel extends BaseChannel {
 		} else {
 			this.room = options.room;
 		}
-
-		if (this.client.users.has(Utils.toId(options.user))) {
-			this.user = this.client.users.get(Utils.toId(options.user));
-		} else {
-			this.user = options.user;
-		}
 	}
 	send(data) {
 		super.send(data, Utils.toId(this.room));

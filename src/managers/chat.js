@@ -2,8 +2,7 @@
 
 const DEFAULT_ROOM = 'lobby';
 const RoomListManager = require('./roomlist');
-const PMChannel = require('../structures/message/pm');
-const RoomChannel = require('../structures/message/chat');
+const ChannelHandler = require('../structures/message/handler');
 const Utils = require('../utils');
 
 class ChatManager {
@@ -62,9 +61,9 @@ class ChatManager {
 					});
 				}
 				this.client.users.check(splittedLine[2]);
-				channel = new RoomChannel(this.client, {
+				channel = new ChannelHandler(this.client, {
 					room: roomid,
-					type: 'ROOM',
+					type: 'room',
 					date: splittedLine[1],
 					user: splittedLine[2],
 					content: splittedLine.slice(3).join('|'),
@@ -79,9 +78,9 @@ class ChatManager {
 					});
 				}
 				this.client.users.check(splittedLine[1]);
-				channel = new RoomChannel(this.client, {
+				channel = new ChannelHandler(this.client, {
 					room: roomid,
-					type: 'ROOM',
+					type: 'room',
 					date: Date.now(),
 					user: splittedLine[1],
 					content: splittedLine.slice(2).join('|'),
@@ -98,8 +97,8 @@ class ChatManager {
 					});
 				}
 				this.client.users.check(splittedLine[1]);
-				channel = new PMChannel(this.client, {
-					type: 'PM',
+				channel = new ChannelHandler(this.client, {
+					type: 'pm',
 					user: splittedLine[1],
 					content: splittedLine.slice(3).join('|'),
 				});
