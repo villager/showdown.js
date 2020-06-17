@@ -3,8 +3,7 @@
 ![npm](https://nodei.co/npm/showdown.js.png?downloads=true&stars=true)
 
 
-![Testing](https://github.com/villager/showdown.js/workflows/TestLand/badge.svg)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+![Testing](https://github.com/villager/showdown.js/workflows/Testing/badge.svg)  [![Dependency Status](https://david-dm.org/villager/showdown.js.svg)](https://david-dm.org/villager/showdown.js) [![devDependency Status](https://david-dm.org/villager/showdown.js/dev-status.svg)](https://david-dm.org/villager/showdown.js?type=dev) [![style: prettier](https://img.shields.io/badge/style-prettier-ff69b4)](https://github.com/prettier/prettier)
 
 ## About
 
