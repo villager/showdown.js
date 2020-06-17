@@ -145,7 +145,9 @@ class ChatManager {
 			case 'queryresponse':
 				switch (splittedLine[1]) {
 					case 'userdetails':
+						if (!this.client.socket.connection.status.named) break;
 						const data = JSON.parse(splittedLine[2]);
+						if (data === null) break;
 						if (data.id === Utils.toId(this.client.name)) {
 							const data = JSON.parse(splittedLine[2]);
 							if (data.group) this.group = data.group;

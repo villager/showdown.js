@@ -8,9 +8,20 @@ class RoomListManager {
 		this.isOfficial = new Utils.Set();
 		this.isChat = new Utils.Set();
 	}
-	join(room) {
-		if (this.client.rooms.has(Utils.toId(room))) return false;
-		this.client.socket.send(`/join ${Utils.toId(room)}`);
+	join(rooms) {
+		if (Array.isArray(rooms)) {
+			let roomData = [];
+			for (const room of rooms) {
+				if (!this.client.rooms.has(Utils.toId(room))) {
+					roomData.push(`/join ${Utils.toId(room)}`);
+				}
+			}
+			this.client.socket.send(roomData);
+		} else {
+			if (!this.client.rooms.has(Utils.toId(rooms))) {
+				this.client.socket.send(`/join ${rooms}`);
+			}
+		}
 	}
 	/**
 	 * Join in all section room
@@ -18,9 +29,7 @@ class RoomListManager {
 	 * @param {Set}
 	 */
 	joinSection(section) {
-		section.forEach(room => {
-			this.join(room);
-		});
+		this.join(section.toJSON());
 	}
 	check() {
 		for (const room of this.client.baseRooms) {

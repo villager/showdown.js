@@ -5,6 +5,7 @@ const Extensions = require('./extensions');
 module.exports = {
 	Map: Extensions.Map,
 	Set: Extensions.Set,
+	Queue: require('./queue'),
 	toId(text) {
 		if (text && text.id) {
 			text = text.id;
