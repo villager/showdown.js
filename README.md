@@ -2,6 +2,10 @@
 
 ![npm](https://nodei.co/npm/showdown.js.png?downloads=true&stars=true)
 
+
+![Testing](https://github.com/villager/showdown.js/workflows/TestLand/badge.svg)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
 ## About
 
 Showdown.js is a module that allows you to easily create a bot for Pokemon Showdown
