@@ -20,6 +20,9 @@ class MessageHandler {
 			this.user = options.user;
 		}
 	}
+	reply(data) {
+		return this.source.send(data);
+	}
 }
 
 module.exports = MessageHandler;

@@ -59,16 +59,31 @@ class Room {
 	 * @param {Set} arr
 	 * @returns {void}
 	 */
-	updateUsers() {}
+	updateUsers(data) {
+		for (const user of data) {
+			if (!user) continue;
+			if (!this.users.has(user)) this.users.add(user.slice(1));
+		}
+	}
 	send(data) {
 		this.client.socket.send(data, this.id);
 	}
 	/**
 	 *
 	 * @param {Map<string, Set>} auth
-	 * @returns {void}
 	 */
-	updateAuth() {}
+	updateAuth(data) {
+		for (let i in data) {
+			if (!this.auth.has(i)) {
+				this.auth.set(i, new Utils.Set());
+			}
+			for (const user of data[i]) {
+				if (!this.auth.get(i).has(user)) {
+					this.auth.get(i).add(user);
+				}
+			}
+		}
+	}
 
 	init(data) {
 		this.name = data.name;

@@ -162,6 +162,22 @@ class ChatManager {
 						}
 						break;
 					case 'roominfo':
+						try {
+							let data = JSON.parse(splittedLine[2]);
+							if (!data.id) break;
+							if (this.client.rooms.has(data.id)) {
+								let room = this.client.rooms.get(data.id);
+								if (!room) break; // Should never happen really.
+								let toUpdate = Object.create(null);
+								let ignore = new Set(['id', 'type', 'roomid']);
+								for (let i in data) {
+									if (!ignore.has(i)) toUpdate[i] = data[i];
+								}
+								room.update(toUpdate);
+							}
+						} catch (e) {
+							break;
+						}
 						break;
 					case 'rooms':
 						if (splittedLine[2] === 'null') break;
