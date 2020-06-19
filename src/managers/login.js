@@ -1,7 +1,9 @@
 'use strict';
 
-const request = require('request');
 const Utils = require('../utils');
+const https = require('https');
+const urlModule = require('url');
+const util = require('util');
 
 class LoginManager {
 	constructor(client) {
@@ -9,75 +11,105 @@ class LoginManager {
 		this.challengekeyid = '';
 		Object.defineProperty(this, 'client', {value: client});
 	}
-	login(name, pass) {
-		let options;
-		/**
-		 * @param {Error} error
-		 * @param {string} response
-		 * @param {string} body
-		 */
-		const callback = (error, response, body) => {
-			if (body === ';') return console.log('Failed to log in, name is registered', this.client.id);
-			if (body.length < 50) return console.log('Failed to log in: ' + body, this.client.id);
-			if (~body.indexOf('heavy load')) {
-				console.log('Failed to log in - login server is under heavy load. Retrying in one minute.', this.client.id);
-				setTimeout(function () {
-					this.login(name, pass);
-				}, 60 * 1000);
-				return;
-			}
-			if (body.substr(0, 16) === '<!DOCTYPE html>') {
-				console.log('Connection error 522 - retrying in one minute', this.client.id);
-				setTimeout(function () {
-					this.login(name, pass);
-				}, 60 * 1000);
-				return;
-			}
-			try {
-				const json = JSON.parse(body.substr(1, body.length));
-				if (json.actionsuccess) {
-					this.client.socket.setNamed();
-					this.client.socket.send(`/trn ${name},0,${json['assertion']}`);
-					return true;
-				} else {
-					throw Error(`Could not log in ${this.client.id}`);
-				}
-			} catch (e) {
-				this.client.socket.setNamed();
-				this.client.socket.send(`/trn ${name},0,${body}`);
-				return true;
-			}
+	get getUrl() {
+		return util.format('https://%s/~~%s/action.php', 'play.pokemonshowdown.com', Utils.toId(this.client.id));
+	}
+	getLogin(nick, pass, callback) {
+		let data = '';
+		let url = urlModule.parse(this.getUrl);
+		let requestOptions = {
+			hostname: url.hostname,
+			port: url.port,
+			path: url.pathname,
+			agent: false,
 		};
 
-		if (pass !== '') {
-			options = {
-				headers: {
-					'content-type': 'application/x-www-form-urlencoded',
-				},
-				url: 'http://play.pokemonshowdown.com/action.php',
-				body:
-					'act=login&name=' +
-					encodeURIComponent(name) +
-					'&pass=' +
-					encodeURIComponent(pass) +
-					'&challengekeyid=' +
-					this.challengekeyid +
-					'&challenge=' +
-					this.challenge,
-			};
-			request.post(options, callback);
+		if (!pass) {
+			requestOptions.method = 'GET';
+			requestOptions.path +=
+				'?act=getassertion&userid=' +
+				Utils.toId(nick) +
+				'&challengekeyid=' +
+				this.challengekeyid +
+				'&challenge=' +
+				this.challenge;
 		} else {
-			options = {
-				url:
-					'http://play.pokemonshowdown.com/action.php?act=getassertion&userid=' +
-					Utils.toId(name) +
-					'&challengekeyid=' +
-					this.challengekeyid +
-					'&challenge=' +
-					this.challenge,
+			requestOptions.method = 'POST';
+			data =
+				'act=login&name=' +
+				Utils.toId(nick) +
+				'&pass=' +
+				pass +
+				'&challengekeyid=' +
+				this.challengekeyid +
+				'&challenge=' +
+				this.challenge;
+			requestOptions.headers = {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length': data.length,
 			};
-			request(options, callback);
 		}
+
+		let req = https.request(requestOptions, res => {
+			res.setEncoding('utf8');
+			let str = '';
+			res.on('data', chunk => {
+				str += chunk;
+			});
+			res.on('end', () => {
+				console.log(str.includes('"actionsuccess": false'));
+				if (str === ';') {
+					this.client.emit('renameFailure', {
+						reason: 'WRONG_PASSWORD',
+					});
+					return;
+				}
+				if (str.length < 50) {
+					this.client.emit('renameFailure', {
+						reason: 'SERVER_ERROR',
+					});
+					return;
+				}
+				if (str.includes('heavy load')) {
+					this.client.emit('renameFailure', {
+						reason: 'HEAVY_LOAD',
+					});
+					return;
+				}
+				str = JSON.parse(str.substr(1));
+				if (str.actionsuccess) {
+					str = str.assertion;
+				} else {
+					this.client.emit('renameFailure', {
+						reason: 'UNKNOW',
+						details: JSON.stringify(str),
+					});
+					return;
+				}
+				if (callback) callback.call(this, str);
+			});
+		});
+
+		req.on('error', e => {
+			this.client.emit('renameFailure', {
+				reason: 'REQUEST',
+				details: e,
+			});
+		});
+
+		if (data) {
+			req.write(data);
+		}
+
+		req.end();
+	}
+	login(name, pass) {
+		this.getLogin(name, pass, token => {
+			if (token) {
+				this.client.socket.send('/trn ' + name + ',0,' + token);
+				this.client.emit('logged', name);
+			}
+		});
 	}
 }
 

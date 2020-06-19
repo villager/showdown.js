@@ -104,8 +104,8 @@ class SocketManager {
 			delete this.sending[k];
 		}
 		this.nextSend = 0;
-		this.client.rooms.cache.clear();
-		this.client.users.cache.clear();
+		this.client.rooms.clear();
+		this.client.users.clear();
 		this.connection.conntime = 0;
 	}
 }
