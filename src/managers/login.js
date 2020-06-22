@@ -1,9 +1,9 @@
 'use strict';
 
 const Utils = require('../utils');
-const https = require('https');
 const urlModule = require('url');
 const util = require('util');
+const BEMA = require('bema-utils');
 
 class LoginManager {
 	constructor(client) {
@@ -15,13 +15,13 @@ class LoginManager {
 		return util.format('https://%s/~~%s/action.php', 'play.pokemonshowdown.com', Utils.toId(this.client.id));
 	}
 	getLogin(nick, pass, callback) {
-		let data = '';
 		let url = urlModule.parse(this.getUrl);
 		let requestOptions = {
 			hostname: url.hostname,
 			port: url.port,
 			path: url.pathname,
 			agent: false,
+			data: '',
 		};
 
 		if (!pass) {
@@ -34,8 +34,7 @@ class LoginManager {
 				'&challenge=' +
 				this.challenge;
 		} else {
-			requestOptions.method = 'POST';
-			data =
+			requestOptions.data =
 				'act=login&name=' +
 				Utils.toId(nick) +
 				'&pass=' +
@@ -46,18 +45,12 @@ class LoginManager {
 				this.challenge;
 			requestOptions.headers = {
 				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length': data.length,
+				'Content-Length': requestOptions.data.length,
 			};
 		}
-
-		let req = https.request(requestOptions, res => {
-			res.setEncoding('utf8');
-			let str = '';
-			res.on('data', chunk => {
-				str += chunk;
-			});
-			res.on('end', () => {
-				console.log(str.includes('"actionsuccess": false'));
+		BEMA.Net(requestOptions.hostname)
+			.request(requestOptions)
+			.then(str => {
 				if (str === ';') {
 					this.client.emit('renameFailure', {
 						reason: 'WRONG_PASSWORD',
@@ -87,21 +80,13 @@ class LoginManager {
 					return;
 				}
 				if (callback) callback.call(this, str);
+			})
+			.catch(e => {
+				this.client.emit('renameFailure', {
+					reason: 'REQUEST',
+					details: e,
+				});
 			});
-		});
-
-		req.on('error', e => {
-			this.client.emit('renameFailure', {
-				reason: 'REQUEST',
-				details: e,
-			});
-		});
-
-		if (data) {
-			req.write(data);
-		}
-
-		req.end();
 	}
 	login(name, pass) {
 		this.getLogin(name, pass, token => {

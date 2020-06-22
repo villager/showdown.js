@@ -1,10 +1,9 @@
 'use strict';
 
-const Extensions = require('./extensions');
-
+const BEMA = require('bema-utils');
 module.exports = {
-	Map: Extensions.Map,
-	Set: Extensions.Set,
+	Map: BEMA.Map,
+	Set: BEMA.Set,
 	Queue: require('./queue'),
 	toId(text) {
 		if (text && text.id) {

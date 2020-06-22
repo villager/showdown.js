@@ -1,9 +1,10 @@
 {
     "name": "showdown.js",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "keywords": [
         "Pokemon Showdown",
         "ps.js",
+        "Bema",
         "Shodwon Bot",
         "bot"
     ],
@@ -39,10 +40,11 @@
         }
     },
     "dependencies": {
+        "bema-utils": "^1.0.4",
         "sockjs-client": "^1.4.0"
     },
     "devDependencies": {
-        "eslint": "^7.2.0",
+        "eslint": "^7.3.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.21.2",
         "eslint-plugin-prettier": "^3.1.4",
