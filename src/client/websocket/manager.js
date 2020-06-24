@@ -74,7 +74,6 @@ class SocketManager {
 		}
 		return this.sendBase(data);
 	}
-	sendUnlimited() {}
 	/**
 	 * Primitive send
 	 * @private

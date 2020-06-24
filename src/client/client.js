@@ -66,7 +66,6 @@ class Client extends BaseClient {
 	 * Validations of data
 	 */
 	$validation() {}
-	loadCommands() {}
 }
 
 module.exports = Client;

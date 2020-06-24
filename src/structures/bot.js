@@ -2,7 +2,7 @@
 
 const Utils = require('../utils');
 
-class User {
+class BaseUser {
 	/**
 	 * Class for the bot as user
 	 * @constructor
@@ -59,4 +59,4 @@ class User {
 		return json;
 	}
 }
-module.exports = User;
+module.exports = BaseUser;
