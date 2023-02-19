@@ -1,4 +1,55 @@
-node_modules
-package-lock.json
-example.js
+/config/*
+/node_modules
+/eslint-cache
+npm-debug.log
 .eslintcache
+.eslintcache-no-types
+package-lock.json
+/test
+# visual studio live share
+.vs
+
+# boilerplate #
+###############
+
+.DS_Store
+
+# editor temp files
+*~
+.idea/
+
+tmp/**/*
+*.lock
+*.DS_Store
+*.swp
+*.out
+*.pyc
+*.pyo
+.installed.cfg
+
+downloads
+dist
+
+# egg related
+develop-eggs
+*.egg-info
+*.egg
+*.EGG
+*.EGG-INFO
+src/*.egg-info
+eggs
+fake-eggs
+
+# django
+local_settings.py
+
+# SCM
+.hg
+.bzr
+.svn
+
+pip-log.txt
+# redis dumps
+*.rdb
+*.js
+!pre-build.js

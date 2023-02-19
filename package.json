@@ -1,6 +1,6 @@
 {
     "name": "showdown.js",
-    "version": "1.0.8",
+    "version": "2.0.0",
     "keywords": [
         "Pokemon Showdown",
         "ps.js",
@@ -8,12 +8,11 @@
         "Shodwon Bot",
         "bot"
     ],
-    "main": "./src/index",
-    "types": "./types/index.d.ts",
+    "main": "dist/src/index",
     "license": "MIT",
     "author": {
         "name": "Aldair Beltran",
-        "email": "aldairbeltran23@hotmail.com",
+        "email": "aldair.beltran@outlook.com",
         "url": "https://github.com/villager"
     },
     "repository": {
@@ -21,6 +20,9 @@
         "url": "git+https://github.com/villager/showdown.js.git"
     },
     "scripts": {
+        "tsc": "tsc",
+        "build": "rm -rf dist/ && node build",
+        "build:src": "tsc --module CommonJS --outDir dist",
         "clean": "prettier --write \"*.{js,md}\" \"**/**/*.js\"",
         "lint": "eslint . --config .eslintrc.json --cache --ext .js"
     },
@@ -40,8 +42,13 @@
             "pre-commit": "npm run lint"
         }
     },
+    "engines": {
+        "node": ">=14.0.0"
+    },
     "dependencies": {
-        "bema-utils": "^1.0.4",
+        "@types/node": "^18.14.0",
+        "@types/sockjs-client": "^1.5.1",
+        "esbuild": "^0.17.9",
         "sockjs-client": "^1.4.0"
     },
     "devDependencies": {
@@ -50,6 +57,7 @@
         "eslint-plugin-import": "^2.21.2",
         "eslint-plugin-prettier": "^3.1.4",
         "husky": "^4.2.5",
-        "prettier": "^2.0.5"
+        "prettier": "^2.0.5",
+        "typescript": "^4.9.4"
     }
 }

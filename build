@@ -1,0 +1,22 @@
+var child_process = require('child_process');
+var decl = ['--decl', 'decl'].includes(process.argv[2]);
+var force = decl || ['--force', 'force', '--full', 'full'].includes(process.argv[2]);
+
+function shell(cmd) {
+	child_process.execSync(cmd, {stdio: 'inherit'});
+}
+
+// Check to make sure the most recently added or updated dependency is installed at the correct version
+try {
+	var version = require('esbuild').version.split('.');
+	if (parseInt(version[1]) < 16) {
+		throw new Error("esbuild version too old");
+	}
+} catch (e) {
+	console.log('Installing dependencies...');
+	shell('npm install');
+}
+// for some reason, esbuild won't be requirable until a tick has passed
+setImmediate(() => {
+	require('./pre-build').transpile(force, decl);
+});
