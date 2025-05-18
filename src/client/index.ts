@@ -38,7 +38,7 @@ export class Client extends BaseClient {
 		this._login = new LoginManager(this);
 
 		this.on('disconnect', err => {
-			console.log('Bot Disconnected' + (err ? ' | ' + err.code + ': ' + err.message : ''));
+			console.log('Bot Disconnected from ' + this.host + (err ? ' | ' + err.code + ': ' + err.message : ''));
 			if (this.socket.connection.closed || this.socket.connection.connecting || this.socket.connection.status.connected)
 				return;
 			this.socket.reconnect();
