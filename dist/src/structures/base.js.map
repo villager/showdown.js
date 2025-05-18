@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/structures/base.ts"],
+  "sourcesContent": ["\r\nimport * as Utils from '../lib';\r\nexport class BaseUser {\r\n\t/**\r\n\t * Class for the bot as user\r\n\t * @constructor\r\n\t */\r\n    name: string;\r\n\tlanguage: ID;\r\n\tclient: Client;\r\n\tconstructor(client: Client) {\r\n\t\tthis.client = client;\r\n\t\tthis.language = 'english' as ID;\r\n\t\t/** @type {string | number} **/\r\n\t}\r\n\tsend(data: string, room: ID) {\r\n\t\tthis.client.send(data, room);\r\n\t}\r\n\t/**\r\n\t * Gets the bot Id\r\n\t * @return {string} Returns an string\r\n\t */\r\n\tget id(): string {\r\n\t\treturn Utils.toId(this.name);\r\n\t}\r\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AACA,YAAuB;AAChB,MAAM,SAAS;AAAA,EAQrB,YAAY,QAAgB;AAC3B,SAAK,SAAS;AACd,SAAK,WAAW;AAAA,EAEjB;AAAA,EACA,KAAK,MAAc,MAAU;AAC5B,SAAK,OAAO,KAAK,MAAM,IAAI;AAAA,EAC5B;AAAA;AAAA;AAAA;AAAA;AAAA,EAKA,IAAI,KAAa;AAChB,WAAO,MAAM,KAAK,KAAK,IAAI;AAAA,EAC5B;AACD;",
+  "names": []
+}

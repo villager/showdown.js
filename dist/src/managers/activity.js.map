@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/managers/activity.ts"],
+  "sourcesContent": ["import { Client } from \"../client\";\r\n\r\nexport class ActivityManager {\r\n    _timer: null | NodeJS.Timer;\r\n    client: Client;\r\n\tdate: number;\r\n\tconstructor(client: Client) {\r\n        this.client = client;\r\n\t\tthis.date = 0;\r\n\t\tthis._timer = null;\r\n\t}\r\n\t_clear() {\r\n\t\tif (!this._timer) return;\r\n\t\tclearTimeout(this._timer);\r\n\t\tthis._timer = null;\r\n\t}\r\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAEO,MAAM,gBAAgB;AAAA,EAI5B,YAAY,QAAgB;AACrB,SAAK,SAAS;AACpB,SAAK,OAAO;AACZ,SAAK,SAAS;AAAA,EACf;AAAA,EACA,SAAS;AACR,QAAI,CAAC,KAAK;AAAQ;AAClB,iBAAa,KAAK,MAAM;AACxB,SAAK,SAAS;AAAA,EACf;AACD;",
+  "names": []
+}

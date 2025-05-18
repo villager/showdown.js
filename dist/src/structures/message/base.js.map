@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/structures/message/base.ts"],
+  "sourcesContent": ["export class Channel {\r\n    client: Client;\r\n    content: string;\r\n    type: string;\r\n\tconstructor(client: Client, options: AnyObject = {}) {\r\n        this.client = client;\r\n\t\tthis.content = options.content;\r\n\t\tthis.type = options.type;\r\n\t}\r\n\tsend(data: string, room?: string) {\r\n\t\treturn this.client.send(data, room);\r\n\t}\r\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,MAAM,QAAQ;AAAA,EAIpB,YAAY,QAAgB,UAAqB,CAAC,GAAG;AAC9C,SAAK,SAAS;AACpB,SAAK,UAAU,QAAQ;AACvB,SAAK,OAAO,QAAQ;AAAA,EACrB;AAAA,EACA,KAAK,MAAc,MAAe;AACjC,WAAO,KAAK,OAAO,KAAK,MAAM,IAAI;AAAA,EACnC;AACD;",
+  "names": []
+}

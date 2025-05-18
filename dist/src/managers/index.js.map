@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/managers/index.ts"],
+  "sourcesContent": ["export {UserManager,RoomManager, FormatsManager} from './cache';\r\nexport {ConnectionManager} from './connection';\r\nexport {ChatManager} from './chat';\r\nexport {LoginManager} from './login';\r\nexport {SendManager} from './sender';"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,mBAAsD;AACtD,wBAAgC;AAChC,kBAA0B;AAC1B,mBAA2B;AAC3B,oBAA0B;",
+  "names": []
+}

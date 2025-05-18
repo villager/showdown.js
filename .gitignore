@@ -26,7 +26,6 @@ tmp/**/*
 .installed.cfg
 
 downloads
-dist
 
 # egg related
 develop-eggs
@@ -49,5 +48,4 @@ local_settings.py
 pip-log.txt
 # redis dumps
 *.rdb
-*.js
 !pre-build.js

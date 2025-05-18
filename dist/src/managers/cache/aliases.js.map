@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/managers/cache/aliases.ts"],
+  "sourcesContent": ["\r\nimport { BaseCache } from \"./base\";\r\n\r\nexport class AliasesManager extends BaseCache {\r\n\t/**\r\n\t * Load the cache with your aliases format\r\n\t * @param {AnyObject} obj\r\n\t */\r\n\tload(obj: AnyObject) {\r\n\t\tif (typeof obj !== 'object') {\r\n\t\t\t// thow error\r\n\t\t} else {\r\n\t\t\tfor (let i in obj) {\r\n\t\t\t\tthis.create(i as ID, obj[i]);\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AACA,kBAA0B;AAEnB,MAAM,uBAAuB,sBAAU;AAAA;AAAA;AAAA;AAAA;AAAA,EAK7C,KAAK,KAAgB;AACpB,QAAI,OAAO,QAAQ,UAAU;AAAA,IAE7B,OAAO;AACN,eAAS,KAAK,KAAK;AAClB,aAAK,OAAO,GAAS,IAAI,CAAC,CAAC;AAAA,MAC5B;AAAA,IACD;AAAA,EACD;AACD;",
+  "names": []
+}

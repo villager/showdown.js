@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/structures/index.ts"],
+  "sourcesContent": ["\r\nexport {User} from './users';\r\nexport {Room} from './rooms';\r\nexport {MessageHandler} from './message';"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AACA,mBAAmB;AACnB,mBAAmB;AACnB,qBAA6B;",
+  "names": []
+}

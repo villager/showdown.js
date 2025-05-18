@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/structures/message/index.ts"],
+  "sourcesContent": ["export {PMChannel} from './pm';\r\nexport {RoomChannel} from './room';\r\nexport {MessageHandler} from './handler';"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,gBAAwB;AACxB,kBAA0B;AAC1B,qBAA6B;",
+  "names": []
+}

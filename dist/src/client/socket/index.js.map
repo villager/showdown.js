@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/client/socket/index.ts"],
+  "sourcesContent": ["export {SocketManager} from './manager';"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,qBAA4B;",
+  "names": []
+}

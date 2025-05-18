@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/lib/index.ts"],
+  "sourcesContent": ["\r\nexport function toId(text: any) {\r\n    if (text && text.id) {\r\n        text = text.id;\r\n    }\r\n    if (typeof text !== 'string' && typeof text !== 'number') return '';\r\n    return ('' + text).toLowerCase().replace(/[^a-z0-9]+/g, '');\r\n}\r\nexport {Net} from './net';"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAQA,iBAAkB;AAPX,SAAS,KAAK,MAAW;AAC5B,MAAI,QAAQ,KAAK,IAAI;AACjB,WAAO,KAAK;AAAA,EAChB;AACA,MAAI,OAAO,SAAS,YAAY,OAAO,SAAS;AAAU,WAAO;AACjE,UAAQ,KAAK,MAAM,YAAY,EAAE,QAAQ,eAAe,EAAE;AAC9D;",
+  "names": []
+}

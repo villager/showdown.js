@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/structures/message/pm.ts"],
+  "sourcesContent": ["import {Channel} from './base';\r\nimport { toId } from '../../lib';\r\nimport { User } from '../users';\r\nexport class PMChannel extends Channel {\r\n    user: User\r\n\tconstructor(client: Client, options: AnyObject = {}) {\r\n\t\tsuper(client, options);\r\n\t\tif (this.client.users.has(toId(options.user) as ID)) {\r\n\t\t\tthis.user = this.client.users.get(toId(options.user) as ID);\r\n\t\t} else {\r\n\t\t\tthis.user = options.user;\r\n\t\t}\r\n\t}\r\n\tsend(data: string) {\r\n\t\tsuper.send(`/msg ${toId(this.user)}, ${data}`);\r\n\t}\r\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,kBAAsB;AACtB,iBAAqB;AAEd,MAAM,kBAAkB,oBAAQ;AAAA,EAEtC,YAAY,QAAgB,UAAqB,CAAC,GAAG;AACpD,UAAM,QAAQ,OAAO;AACrB,QAAI,KAAK,OAAO,MAAM,QAAI,iBAAK,QAAQ,IAAI,CAAO,GAAG;AACpD,WAAK,OAAO,KAAK,OAAO,MAAM,QAAI,iBAAK,QAAQ,IAAI,CAAO;AAAA,IAC3D,OAAO;AACN,WAAK,OAAO,QAAQ;AAAA,IACrB;AAAA,EACD;AAAA,EACA,KAAK,MAAc;AAClB,UAAM,KAAK,YAAQ,iBAAK,KAAK,IAAI,MAAM,MAAM;AAAA,EAC9C;AACD;",
+  "names": []
+}

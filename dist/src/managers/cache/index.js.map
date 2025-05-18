@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/managers/cache/index.ts"],
+  "sourcesContent": ["export {UserManager} from './users';\r\nexport {RoomManager} from './rooms';\r\nexport {FormatsManager} from './formats';"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,mBAA0B;AAC1B,mBAA0B;AAC1B,qBAA6B;",
+  "names": []
+}

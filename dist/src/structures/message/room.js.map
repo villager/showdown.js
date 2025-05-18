@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/structures/message/room.ts"],
+  "sourcesContent": ["import { toId } from \"../../lib\";\r\n\r\nimport {Channel} from './base';\r\nexport class RoomChannel extends Channel {\r\n    date: number;\r\n    room: string;\r\n\tconstructor(client: Client, options: AnyObject) {\r\n\t\tsuper(client, options);\r\n\r\n\t\tthis.date = options.date;\r\n\r\n\t\tif (this.client.rooms.has(toId(options.room) as ID)) {\r\n\t\t\tthis.room = this.client.rooms.get(toId(options.room) as ID);\r\n\t\t} else {\r\n\t\t\tthis.room = options.room;\r\n\t\t}\r\n\t}\r\n\tsend(data: string) {\r\n\t\tsuper.send(data, toId(this.room));\r\n\t}\r\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,iBAAqB;AAErB,kBAAsB;AACf,MAAM,oBAAoB,oBAAQ;AAAA,EAGxC,YAAY,QAAgB,SAAoB;AAC/C,UAAM,QAAQ,OAAO;AAErB,SAAK,OAAO,QAAQ;AAEpB,QAAI,KAAK,OAAO,MAAM,QAAI,iBAAK,QAAQ,IAAI,CAAO,GAAG;AACpD,WAAK,OAAO,KAAK,OAAO,MAAM,QAAI,iBAAK,QAAQ,IAAI,CAAO;AAAA,IAC3D,OAAO;AACN,WAAK,OAAO,QAAQ;AAAA,IACrB;AAAA,EACD;AAAA,EACA,KAAK,MAAc;AAClB,UAAM,KAAK,UAAM,iBAAK,KAAK,IAAI,CAAC;AAAA,EACjC;AACD;",
+  "names": []
+}

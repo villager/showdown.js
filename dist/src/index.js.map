@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/index.ts"],
+  "sourcesContent": ["\r\nexport {Client} from './client';\r\nexport {User, Room, MessageHandler} from './structures';\r\nexport {UserManager,RoomManager, FormatsManager, ConnectionManager, ChatManager, LoginManager, SendManager} from './managers';\r\nexport {Net} from './lib';"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AACA,oBAAqB;AACrB,wBAAyC;AACzC,sBAAiH;AACjH,iBAAkB;",
+  "names": []
+}
